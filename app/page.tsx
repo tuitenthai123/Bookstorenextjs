@@ -1,47 +1,87 @@
-import logo from "../asset/Logo.png"
-import { BsSearch } from "react-icons/bs";
-import { FaRegCircleUser,FaBagShopping  } from "react-icons/fa6";
+"use client"
+import * as React from "react"
+import Autoplay from "embla-carousel-autoplay"
+import Header from "./_components/header"
+import { Card, CardContent } from "@/components/ui/card"
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable"
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel"
+
 
 export default function Home() {
 
+  const plugin = React.useRef(
+    Autoplay({ delay: 2000, stopOnInteraction: true })
+  )
+  const Slideritem = [
+    {index:1,url:"https://cdn0.fahasa.com/media/magentothem/banner7/BoargameT7_Slidebanner_840x320.jpg"},
+    {index:2,url:"https://cdn0.fahasa.com/media/magentothem/banner7/TrangDoChoiThang7_Resize_SlideBanner_T7_840x320.jpg"},
+    {index:3,url:"https://cdn0.fahasa.com/media/magentothem/banner7/BaloMiti_Slidebanner_840x320.png"},
+    {index:4,url:"https://cdn0.fahasa.com/media/magentothem/banner7/NCCVinhThinh_T07_Slide_840x320.jpg"},
+    {index:5,url:"https://cdn0.fahasa.com/media/magentothem/banner7/NCCPlus_T07_Slide_840x320_1.jpg"},
+    {index:6,url:"https://cdn0.fahasa.com/media/magentothem/banner7/Backtoschool_0724_LDP_840x320.png"},
+  ]
   return (
     <div>
-      <div className="sticky top-0 z-50 p-3 backdrop-blur-lg border-b border-neutral-200 bg-cyan-700 sm:bg-white">
-          <div className="container px-4 mx-auto relative text-sm ">
-            <div className="flex justify-between items-center">
-              {/* logo */}
-              <div className="cursor-pointer flex h-20 w-20 items-center flex-shrink-0 sm:flex-row flex-col">
-                <img className="mr-2 h-16 w-32" src={logo.src} alt="logo" />
-                <span className="tracking-tight font-bold text-xl bg-gradient-to-r sm:from-[#3494E6] sm:to-[#EC6EAD] from-[#F29492] to-[#FFC371] text-transparent bg-clip-text">FruitsBook</span>
-              </div>
-              {/* tìm kiếm */}
-              <div className='w-1/2 flex items-center'>
-                <span className='h-10 pl-4 flex items-center justify-center bg-[#DDE4E4] rounded-l-[20px] text-gray-500'>
-                  <BsSearch size={24} />
-                </span>
-                <input
-                  type='text'
-                  className='outline-none bg-[#DDE4E4] w-full px-4 py-2 rounded-r-[20px] h-10 text-gray-500'
-                  placeholder='Tìm sách'
-                />
-              </div>
-
-              {/* đăng nhập */}
-              <div className="flex gap-5">
-                {/* giỏ hàng */}
-                <div className="flex flex-col justify-center items-center p-2 rounded-full w-full sm:rounded-xl bg-slate-200 cursor-pointer gap-1 md:w-24">
-                  <FaBagShopping size={24}/>
-                  <span className="md:block hidden">Giỏ Hàng</span>
-                </div>
-                {/* user */}
-                <div className="flex flex-col justify-center items-center p-2 rounded-full w-full sm:rounded-xl bg-slate-200 cursor-pointer gap-1 md:w-24">
-                  <FaRegCircleUser size={24} />
-                  <span className="md:block hidden text-center">Tài Khoản</span>
-                </div>
-                
-              </div>
+      <div>
+        <Header/>
+      </div>
+      <div className="flex justify-center items-center w-full pt-5">
+        <ResizablePanelGroup
+          direction="horizontal"
+          className="w-full rounded-lg border"
+        >
+          <ResizablePanel defaultSize={60}>
+            <div className="flex h-auto items-center justify-center p-6">
+            <Carousel
+              plugins={[plugin.current]}
+              className=""
+              onMouseEnter={plugin.current.stop}
+              onMouseLeave={plugin.current.reset}
+            >
+            <CarouselContent >
+              {Slideritem.map(({index,url}) => (
+                <CarouselItem key={index}>
+                  <div className="p-1">
+                    <Card>
+                      <CardContent className="flex aspect-square items-center justify-center p-6">
+                        <img src={url} className="w-5/6"></img>
+                        {/* {index} */}
+                      </CardContent>
+                    </Card>
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
             </div>
-          </div>
+          </ResizablePanel>
+          <ResizableHandle />
+          <ResizablePanel defaultSize={40}>
+            <ResizablePanelGroup direction="vertical">
+              <ResizablePanel defaultSize={50}>
+                <div className="flex h-full items-center justify-center p-6">
+                  <span className="font-semibold">Two</span>
+                </div>
+              </ResizablePanel>
+              <ResizableHandle />
+              <ResizablePanel defaultSize={50}>
+                <div className="flex h-full items-center justify-center p-6">
+                  <span className="font-semibold">Three</span>
+                </div>
+              </ResizablePanel>
+            </ResizablePanelGroup>
+          </ResizablePanel>
+        </ResizablePanelGroup>
       </div>
     </div>
   )
