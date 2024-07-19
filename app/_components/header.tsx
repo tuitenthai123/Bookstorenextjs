@@ -6,8 +6,8 @@ import Searchbar from "./searchbar"
 
 const Header = () => {
   return (
-    <div className="sticky top-0 z-50 p-3 backdrop-blur-lg border-b border-neutral-200 bg-cyan-700 sm:bg-white">
-    <div className="container px-4 mx-auto relative text-sm ">
+    <div className="sticky top-0 z-50 backdrop-blur-lg border-b border-neutral-200 bg-cyan-700 sm:bg-white">
+    <div className="container mx-auto relative text-sm ">
       <div className="flex justify-between items-center">
         {/* logo */}
         <div className="cursor-pointer flex h-20 w-20 items-center flex-shrink-0 sm:flex-row flex-col">
