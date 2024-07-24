@@ -5,8 +5,6 @@ import Carouselbook from "./_components/carouselbook"
 import Product from "./_components/product"
 
 export default function Home() {
-
-
   return (
     <div>
       <div className="sticky top-0 z-50">
