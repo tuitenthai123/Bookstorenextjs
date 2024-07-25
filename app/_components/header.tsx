@@ -16,6 +16,8 @@ import { Button } from '@/components/ui/button'
 const Header = () => {
   const [hienthipass, sethienthipass] = useState("password")
   const [checkhienthipass, setcheckhienthipass] = useState("Hiện")
+  const [tinhnang, settinhnang] = useState("dangnhap")
+  
   const handlehienthipass = () => {
     if(checkhienthipass === "Hiện"){
       sethienthipass("text")
@@ -54,51 +56,56 @@ const Header = () => {
                 <DialogContent className='sm:w-[900px] w-[425px] rounded-lg'>
                   <div className='flex'>
                     <div className='sm:w-2/3 border w-full p-6 flex flex-col gap-5'>
-                      <div className='flex flex-col gap-5'>
-                        <div className='flex flex-col gap-1'>
-                          <div className='text-lg font-medium'>Đăng nhập,</div>
-                          <div className='text-xs'>Đăng nhập tài khoản FruitsBook bằng Email</div>
-                        </div>
-                        {/* dang nhap */}
-                        <div className='flex gap-1'>
-                          <div className='w-full'>
-                            <div className='flex flex-col gap-4'>
-                              <div className='flex flex-col items-start gap-6'>
-                                  {/* email */}
-                                  <div className="flex items-center border-b border-teal-500  w-full p-1">
-                                    <input className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 leading-tight focus:outline-none" type="email" placeholder="abc@gmail.com" aria-label="Full name"/>
+                      {tinhnang === "dangnhap"? (
+                        <div>
+                          <div className='flex flex-col gap-5'>
+                            <div className='flex flex-col gap-1'>
+                              <div className='text-lg font-medium'>Đăng nhập,</div>
+                              <div className='text-xs'>Đăng nhập tài khoản FruitsBook bằng Email</div>
+                            </div>
+                            {/* dang nhap */}
+                            <div className='flex gap-1'>
+                              <div className='w-full'>
+                                <div className='flex flex-col gap-4'>
+                                  <div className='flex flex-col items-start gap-6'>
+                                      {/* email */}
+                                      <div className="flex items-center border-b border-teal-500  w-full p-1">
+                                        <input className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 leading-tight focus:outline-none" type="email" placeholder="abc@gmail.com" aria-label="Full name"/>
+                                      </div>
+                                      {/* mật khẩu */}
+                                      <div className="flex items-center border-b border-teal-500  w-full p-1">
+                                        <input className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 leading-tight focus:outline-none" type={hienthipass} placeholder="Mật Khẩu" aria-label="Full name"/>
+                                        <button className="flex-shrink-0 border-transparent border-4 text-teal-500 hover:text-teal-800 text-sm py-1 rounded" type="button" onClick={handlehienthipass}>{checkhienthipass}</button>
+                                      </div>
                                   </div>
-                                  {/* mật khẩu */}
-                                  <div className="flex items-center border-b border-teal-500  w-full p-1">
-                                    <input className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 leading-tight focus:outline-none" type={hienthipass} placeholder="Mật Khẩu" aria-label="Full name"/>
-                                    <button className="flex-shrink-0 border-transparent border-4 text-teal-500 hover:text-teal-800 text-sm py-1 rounded" type="button" onClick={handlehienthipass}>{checkhienthipass}</button>
-                                  </div>
-                              </div>
-                                <div className='flex justify-end gap-2 text-xs text-teal-500'>
-                                  <div className='flex flex-col justify-end items-end gap-2'>
-                                    <u className='cursor-pointer sm:-ml-36'>Quên mật khẩu?</u>
-                                    <span className='cursor-pointer sm:-ml-36'>Chưa có tài khoản? <u >tạo tài khoản!</u></span>
-                                  </div>
+                                    <div className='flex justify-end gap-2 text-xs text-teal-500'>
+                                      <div className='flex flex-col justify-end items-end gap-2'>
+                                        <u className='cursor-pointer sm:-ml-36'>Quên mật khẩu?</u>
+                                        <span className='cursor-pointer sm:-ml-36'>Chưa có tài khoản? <u >tạo tài khoản!</u></span>
+                                      </div>
+                                    </div>
                                 </div>
+                              </div>
+                            </div>
+                          </div>
+                          {/*nút đăng nhập*/}
+                          <div>
+                            <Button className=' w-full' variant={'custommau'}>Đăng nhập</Button>
+                          </div>
+                          <div className='sm:mt-24 mt-2 flex flex-col gap-3'>
+                            <div className=' flex items-center justify-center opacity-70'>
+                              Hoặc tiếp tục bằng
+                            </div>
+                            {/* google hoặc facebook */}
+                            <div className='flex items-center justify-center gap-10'>
+                                <img src="https://img.icons8.com/?size=100&id=114441&format=png&color=000000" alt="" className='size-14 transition shadow-lg rounded-full ease-in-out hover:-translate-y-3 hover:scale-125 duration-400' />
+                                <img src="https://img.icons8.com/?size=100&id=17949&format=png&color=000000" alt="" className='size-14 transition shadow-lg rounded-full ease-in-out hover:-translate-y-3 hover:scale-125 duration-400' />
                             </div>
                           </div>
                         </div>
-                      </div>
-                       {/*nút đăng nhập*/}
-                      <div>
-                        <Button className=' w-full' variant={'custommau'}>Đăng nhập</Button>
-                      </div>
-                      <div className='sm:mt-24 mt-2 flex flex-col gap-3'>
-                        <div className=' flex items-center justify-center opacity-70'>
-                          Hoặc tiếp tục bằng
-                        </div>
-                        {/* google hoặc facebook */}
-                        <div className='flex items-center justify-center gap-10'>
-                            <img src="https://img.icons8.com/?size=100&id=114441&format=png&color=000000" alt="" className='size-14 transition shadow-lg rounded-full ease-in-out hover:-translate-y-3 hover:scale-125 duration-400' />
-                            <img src="https://img.icons8.com/?size=100&id=17949&format=png&color=000000" alt="" className='size-14 transition shadow-lg rounded-full ease-in-out hover:-translate-y-3 hover:scale-125 duration-400' />
-                        </div>
-                      </div>
-                     
+                      ):(
+                        <div>conmeo</div>
+                      )}
                     </div>
 
                     {/* hinh */}
