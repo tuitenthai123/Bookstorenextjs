@@ -22,7 +22,7 @@ const books: Book[] = [
     id: 1,
     title: "Góc Nhỏ Có Nắng",
     author: "Little Rainbow",
-    image: "https://via.placeholder.com/150x200",
+    image: "https://cdn0.fahasa.com/media/catalog/product/b/_/b_a-in-g_c-nh_-c_-n_ng.jpg",
     points: 4334,
     publisher: "Thanh Niên",
     price: 55760,
@@ -42,49 +42,57 @@ const books: Book[] = [
     id: 2,
     title: "Tô Bình Yên Về Hạnh Phúc (Tái Bản 2022)",
     author: "Kulzsc",
-    image: "https://via.placeholder.com/150x200",
+    image: "https://cdn0.fahasa.com/media/catalog/product/8/9/8935325006289.jpg",
     points: 1837,
     publisher: "NXB Kim Đồng",
     price: 43200,
     oldPrice: 48000,
     discount: 10,
-    description: "A great book for self-improvement...",
+    description: `<div class="col-xs-12 description"><p style="text-align: justify;"><strong>Tô Bình Yên Vẽ Hạnh Phúc (Tái Bản 2022)</strong></p>
+
+<p style="text-align: justify;">Sau thành công của cuốn sách đầu tay “Phải lòng với cô đơn” chàng họa sĩ nổi tiếng và tài năng Kulzsc đã trở lại với một cuốn sách vô cùng đặc biệt mang tên: "Tô bình yên - vẽ hạnh phúc” – sắc nét phong cách cá nhân với một chút “thơ thẩn, rất hiền”.</p>
+
+<p style="text-align: justify;">Không giống với những cuốn sách chỉ để đọc, “Tô bình yên – vẽ hạnh phúc” là một cuốn sách mà độc giả vừa tìm được “Hạnh phúc to to từ những điều nho nhỏ” vừa được thực hành ngay lập tức. Một sự kết hợp mới lạ đầy thú vị giữa thể loại sá...</p></div>`,
   },
   {
     id: 3,
     title: "999 Lá Thư Gửi Cho Chính Mình - Tô Màu Cuộc Sống",
     author: "Miêu Công Tử, Hà Trang (Tahtag)",
-    image: "https://via.placeholder.com/150x200",
+    image: "https://cdn0.fahasa.com/media/catalog/product/9/9/999-l_-th_-g_i-cho-ch_nh-m_nh-_-t_-m_u-cu_c-s_ng.jpg",
     points: 1727,
     publisher: "NXB Trẻ",
     price: 75900,
     oldPrice: 79900,
     discount: 5,
-    description: "Motivational letters to yourself...",
+    description: `<div class="col-xs-12 description"><p style="text-align: justify;"><strong>999 Lá Thư Gửi Cho Chính Mình - Tô Màu Cuộc Sống</strong></p>
+<p style="text-align: justify;">Chúng mình đều biết những sắc màu của cuộc sống đều bắt nguồn từ những điều bình dị và thường nhật nhất xung quanh mà ta vẫn thường tiếp xúc mỗi ngày: như bầu trời xanh ngát, như áng mây trắng tinh, như ánh nắng phủ vàng lên những đóa hoa hồng ngọt… Thế nhưng nhịp sống hàng ngày của chúng ta luôn trôi qua trong sự vội vã, những bộn bề hóa thành “bộ lọc” biến bức tranh cuộc sống muôn màu kia trở nên ảm đạm và phủ đầy âu lo, khiến ta dường như quên lãng việc phải khám phá ra những vẻ đẹp thuần khiết của vạn vật, quên mất rằng thế giới mà chúng ta đang sống cũng có ...</p></div>`,
   },
   {
     id: 4,
     title: "Doraemon - Tiểu Thuyết - Nobita Và Bản Giao Hưởng Địa Cầu",
     author: "Fujiko F Fujio , Teruko Utsumi, Kazuaki Imai",
-    image: "https://via.placeholder.com/150x200",
+    image: "https://cdn0.fahasa.com/media/catalog/product/d/o/doraemon-tieu-thuyet_nobita-va-ban-giao-huong-dia-cau_bia.jpg",
     points: 1260,
     publisher: "Shogakukan",
     price: 89100,
     oldPrice: 99000,
     discount: 10,
-    description: "Join Doraemon and friends in an exciting adventure...",
+    description: `<div class="col-xs-12 description"><p style="text-align: justify;"><strong>999 Lá Thư Gửi Cho Chính Mình - Tô Màu Cuộc Sống</strong></p>
+<p style="text-align: justify;">Chúng mình đều biết những sắc màu của cuộc sống đều bắt nguồn từ những điều bình dị và thường nhật nhất xung quanh mà ta vẫn thường tiếp xúc mỗi ngày: như bầu trời xanh ngát, như áng mây trắng tinh, như ánh nắng phủ vàng lên những đóa hoa hồng ngọt… Thế nhưng nhịp sống hàng ngày của chúng ta luôn trôi qua trong sự vội vã, những bộn bề hóa thành “bộ lọc” biến bức tranh cuộc sống muôn màu kia trở nên ảm đạm và phủ đầy âu lo, khiến ta dường như quên lãng việc phải khám phá ra những vẻ đẹp thuần khiết của vạn vật, quên mất rằng thế giới mà chúng ta đang sống cũng có ...</p></div>`,
   },
   {
     id: 5,
     title: "Trốn Lên Mái Nhà Để Khóc - Tặng Kèm Bookmark",
     author: "Lam",
-    image: "https://via.placeholder.com/150x200",
+    image: "https://cdn0.fahasa.com/media/catalog/product/b/_/b_a-1-tr_n-l_n-m_i-nh_-_-kh_c-2.jpg",
     points: 1210,
     publisher: "NXB Văn Học",
     price: 68400,
     oldPrice: 76000,
     discount: 10,
-    description: "Emotional stories to heal your heart...",
+    description: `<div class="col-xs-12 description"><p style="text-align: justify;"><strong>Trốn Lên Mái Nhà Để Khóc</strong></p>
+<p style="text-align: justify;">Những cơn gió heo may len lỏi vào từng góc phố nhỏ, mùa thu về gợi nhớ bao yêu thương đong đầy, bao xúc cảm dịu dàng của ký ức. Đó là nỗi nhớ đau đáu những hương vị quen thuộc của đồng nội, là hoài niệm bất chợt khi đi trên con đường cũ in dấu bao kỷ niệm... để rồi ta ước có một chuyến tàu kỳ diệu trở về những năm tháng ấy, trở về nơi nương náu bình yên sau những tháng ngày loay hoay để học cách trở thành một người lớn. Bạn sẽ được đắm mình trong những cảm xúc đẹp đẽ xen lẫn những tiếc nuối đầy lắng đọng trong “Trốn lên mái nhà đẻ khóc” của Lam.</p>
+<p style="text-align: justify;">Có nhiều câu chuyện luôn nằm trong k...</p></div>`,
   },
 ];
 
@@ -109,7 +117,11 @@ const BookList: React.FC = () => {
 
   return (
     <div className="p-5">
-
+        <div className="flex items-center mb-1 bg-black p-3 rounded-t-lg gap-3">
+          <span className="text-xl font-semibold text-white">
+            Bản xếp hạng bán chạy tuần
+          </span>
+        </div>
       {/* Tabs */}
       <div className="flex border-b mb-4">
         {categories.map((category, index) => (
