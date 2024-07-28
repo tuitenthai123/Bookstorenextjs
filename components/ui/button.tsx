@@ -9,6 +9,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
+        nutxemthem:"border border-input border-red-500 text-red-500 bg-background transform transition-transform duration-300 hover:scale-125 hover:text-red-500",
         custommau: "bg-[#009E60] text-primary-foreground hover:bg-[#009E60]/90",
         default: "bg-primary text-primary-foreground hover:bg-primary/90",
         destructive:

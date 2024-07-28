@@ -3,7 +3,7 @@ import Link from "next/link"
 
 const Product = () => {
     const thuonghieu =[
-        {id:1,urlimg:"https://cdn0.fahasa.com/media/wysiwyg/Thang-07-2024/IconT7_Sale Năm Học Mới_120x120.png",label:"Back To School",urlnav:"##"},
+        {id:1,urlimg:"https://cdn0.fahasa.com/media/wysiwyg/Thang-07-2024/IconT7_Sale Năm Học Mới_120x120.png",label:"Back To School",urlnav:"#"},
         {id:2,urlimg:"https://cdn0.fahasa.com/media/wysiwyg/Thang-07-2024/IconT7_Logo NCC_HuyHoang_120x120.png",label:"Huy Hoàng",urlnav:"#"},
         {id:3,urlimg:"https://cdn0.fahasa.com/media/wysiwyg/Duy-VHDT/Icon_Balo_120x120.png",label:"Balo",urlnav:"#"},
         {id:4,urlimg:"https://cdn0.fahasa.com/media/wysiwyg/Thang-05-2024/Icon_GiamGia_120x120.png",label:"Sản Phẩm Được Trợ Giá",urlnav:"#"},

@@ -2,7 +2,9 @@
 import * as React from "react"
 import Header from "./_components/header"
 import Carouselbook from "./_components/carouselbook"
-import Product from "./_components/product"
+import Portfolio from "./_components/portfolio"
+import Trendingshop from "./_components/trendingshop"
+import Topsellerweek from "./_components/topsellerweek"
 
 export default function Home() {
   return (
@@ -13,8 +15,14 @@ export default function Home() {
       <div>
         <Carouselbook/>
       </div>
-      <div className="-mt-2">
-        <Product/>
+      <div className="mt-2 hidden md:block">
+        <Portfolio/>
+      </div>
+      <div>
+        <Trendingshop/>
+      </div>
+      <div>
+        <Topsellerweek/>
       </div>
     </div>
   )

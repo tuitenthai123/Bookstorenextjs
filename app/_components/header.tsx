@@ -2,7 +2,6 @@
 import React,{useState} from 'react'
 import logo from "../../asset/Logo.png"
 import { FaRegCircleUser,FaBagShopping  } from "react-icons/fa6"
-import { FaFacebookF } from "react-icons/fa";
 import Icon from "./icon"
 import Searchbar from "./searchbar"
 import {
@@ -11,7 +10,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Button } from '@/components/ui/button'
-
 
 const Header = () => {
   const [hienthipass, sethienthipass] = useState("password")
@@ -30,7 +28,7 @@ const Header = () => {
   
   return (
   <Dialog>
-    <div className="sticky top-0 z-50 backdrop-blur-lg border-b border-neutral-200 bg-cyan-700 sm:bg-white">
+    <div className="sticky top-0 z-50 backdrop-blur-lg border-b border-neutral-200 bg-cyan-700 sm:bg-white/75">
         <div className="container mx-auto relative text-sm ">
           <div className="flex justify-between items-center">
             {/* logo */}
