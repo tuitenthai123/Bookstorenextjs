@@ -1,20 +1,32 @@
 "use client"
-import React,{useState} from 'react'
+import React,{useState,useRef} from 'react'
+import axios from 'axios'
 import logo from "../../asset/Logo.png"
-import { FaRegCircleUser,FaBagShopping  } from "react-icons/fa6"
 import Icon from "./icon"
 import Searchbar from "./searchbar"
+import {InputOTPForm}  from './OTPinput'
+import { FaRegCircleUser,FaBagShopping  } from "react-icons/fa6"
+import { IoMdArrowRoundBack } from "react-icons/io";
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Button } from '@/components/ui/button'
+import { useToast } from "@/components/ui/use-toast"
 
-const Header = () => {
+
+const Header: React.FC = () => {
   const [hienthipass, sethienthipass] = useState("password")
   const [checkhienthipass, setcheckhienthipass] = useState("Hiện")
   const [tinhnang, settinhnang] = useState("dangnhap")
+  const [emailtemp, setemailtemp] = useState("")
+  const email = useRef("")
+  const { toast } = useToast()
+
+  const handleOtpSubmit = (otpValue: string) => {
+    handlekichhoatemail(otpValue,emailtemp)
+  };
   
   const handlehienthipass = () => {
     if(checkhienthipass === "Hiện"){
@@ -25,7 +37,45 @@ const Header = () => {
       setcheckhienthipass("Hiện")
     }
   }
-  
+
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+    return emailRegex.test(email);
+  };
+
+  const handlexacthucemail = async () => {
+    let emailinput = email.current.value
+    if(validateEmail(emailinput)){
+      
+      const guimail = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth`,{emailinput},
+        {headers: {"Content-Type": "application/json",},},)
+      settinhnang("xacthuc")
+      setemailtemp(emailinput)
+    }else{
+      alert("không đúng định dạng email vui lòng nhập lại")
+    }
+  }
+
+  const handlekichhoatemail = async (OTP:string,email:string) => {
+    const guimail = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/verify`,{OTP,email},
+      {headers: {"Content-Type": "application/json",},},)
+    console.log(guimail)
+    if(guimail?.data?.message === "ok"){
+      settinhnang("nhapmatkhau")
+      toast({
+        variant: "default",
+        title: "Xác thực thành công",
+        description: "Bạn đã xác thực thành công email",
+      })
+    }else{
+      console.log("conmeo")
+      toast({
+        variant: "destructive",
+        title: "Lỗi mã xác thực",
+        description: "Hãy kiểm tra lại email của bạn đôi khi trong hộp thư rác",
+      })
+    }
+  }
   return (
   <Dialog>
     <div className="sticky top-0 z-50 backdrop-blur-lg border-b border-neutral-200 bg-cyan-700 sm:bg-white/75">
@@ -45,7 +95,7 @@ const Header = () => {
 
               {/* đăng nhập */}
               <DialogTrigger asChild>
-                <div>
+                <div onClick={()=>{settinhnang("dangnhap")}}>
                   <Icon icon={FaRegCircleUser} label="Tài Khoản" href="#" />
                 </div>
               </DialogTrigger>
@@ -76,10 +126,10 @@ const Header = () => {
                                         <button className="flex-shrink-0 border-transparent border-4 text-teal-500 hover:text-teal-800 text-sm py-1 rounded" type="button" onClick={handlehienthipass}>{checkhienthipass}</button>
                                       </div>
                                   </div>
-                                    <div className='flex justify-end gap-2 text-xs text-teal-500'>
+                                    <div className='flex justify-end gap-2 text-xs text-teal-500 mb-4'>
                                       <div className='flex flex-col justify-end items-end gap-2'>
                                         <u className='cursor-pointer sm:-ml-36'>Quên mật khẩu?</u>
-                                        <span className='cursor-pointer sm:-ml-36'>Chưa có tài khoản? <u >tạo tài khoản!</u></span>
+                                        <span className='cursor-pointer sm:-ml-36'>Chưa có tài khoản? <u onClick={()=>{settinhnang("taotaikhoan")}}>Tạo tài khoản!</u></span>
                                       </div>
                                     </div>
                                 </div>
@@ -96,16 +146,58 @@ const Header = () => {
                             </div>
                             {/* google hoặc facebook */}
                             <div className='flex items-center justify-center gap-10'>
-                                <img src="https://img.icons8.com/?size=100&id=114441&format=png&color=000000" alt="" className='size-14 transition shadow-lg rounded-full ease-in-out hover:-translate-y-3 hover:scale-125 duration-400' />
-                                <img src="https://img.icons8.com/?size=100&id=17949&format=png&color=000000" alt="" className='size-14 transition shadow-lg rounded-full ease-in-out hover:-translate-y-3 hover:scale-125 duration-400' />
+                                <img src="https://img.icons8.com/?size=100&id=114441&format=png&color=000000" alt="" className='size-14 transition shadow-lg rounded-full ease-in-out hover:-translate-y-3 hover:scale-110 duration-300' />
+                                <img src="https://img.icons8.com/?size=100&id=17949&format=png&color=000000" alt="" className='size-14 transition shadow-lg rounded-full ease-in-out hover:-translate-y-3 hover:scale-110 duration-300' />
                             </div>
                           </div>
                         </div>
-                      ):(
-                        <div>conmeo</div>
-                      )}
+                      ):
+                      // tạo tài khoản
+                      tinhnang === "taotaikhoan" ? (
+                        // đăng kí
+                        <div className='flex flex-col gap-3'>
+                          <div className='cursor-pointer w-5' onClick={()=>{settinhnang("dangnhap")}}>
+                            <IoMdArrowRoundBack size={30} />
+                          </div>
+                          <div className='flex flex-col gap-4'>
+                            <div className='flex flex-col'>
+                              <span className='text-lg font-medium'>Tạo tài khoản</span>
+                              <span className='text-xs'>Nhập email của bạn vào</span>
+                            </div>
+                            {/* email input */}
+                            <div className="flex items-center border-b border-teal-500 w-full p-1">
+                              <input ref={email} className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 leading-tight focus:outline-none" type="email" placeholder="abc@gmail.com" aria-label="Full name"/>
+                            </div>
+                            <div className='sm:mt-4 mt-1' onClick={handlexacthucemail}>
+                              <Button className=' w-full' variant={'custommau'}>Tiếp tục</Button>
+                            </div>
+                            <div className='sm:mt-24 mt-2 flex flex-col gap-3'>
+                              <div className=' flex items-center justify-center opacity-70'>
+                                Hoặc đăng nhập bằng
+                              </div>
+                              {/* google hoặc facebook */}
+                              <div className='flex items-center justify-center gap-10'>
+                                  <img src="https://img.icons8.com/?size=100&id=114441&format=png&color=000000" alt="" className='size-14 transition shadow-lg rounded-full ease-in-out hover:-translate-y-3 hover:scale-110 duration-300' />
+                                  <img src="https://img.icons8.com/?size=100&id=17949&format=png&color=000000" alt="" className='size-14 transition shadow-lg rounded-full ease-in-out hover:-translate-y-3 hover:scale-110 duration-300' />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ):
+                      tinhnang === "xacthuc" ?(
+                        <div className='flex flex-col gap-3'>
+                          <div className='cursor-pointer w-5' onClick={()=>{settinhnang("taotaikhoan")}}>
+                            <IoMdArrowRoundBack size={30} />
+                          </div>
+                          <div className='flex flex-col gap-2 items-center justify-center'>
+                            {/* email input */}
+                            <div >
+                              <InputOTPForm onOtpSubmit={handleOtpSubmit} otpDescription='Check thùng thư nhập mã xác nhận tại đây' otpLabel='Xác thực email' buttonlabel='Xác Thực'/>
+                            </div>
+                          </div>
+                        </div>
+                      ):(<div>hehehe</div>)}
                     </div>
-
                     {/* hinh */}
                     <div className='sm:w-1/3'>
                       <div className='border hidden md:block p-2 h-full bg-green-200/75 rounded-r-lg'>

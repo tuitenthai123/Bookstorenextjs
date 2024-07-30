@@ -29,14 +29,11 @@ const books: Book[] = [
     oldPrice: 68000,
     discount: 18,
     description:`        
-        <strong>
-            Góc Nhỏ Có Nắng
-        </strong>
-        <p>- Với 30 chủ đề tô màu phong phú đa dạng, mỗi bức tranh như là một lời thủ thỉ tâm tình gửi đến bạn</p>
-        <p>- Thư giãn và chữa lành: Với những hình ảnh đẹp mắt và đơn giản, tô màu sẽ là một phương pháp hiệu quả giúp bạn chữa lành và nuôi dưỡng tâm hồn</p>
-        <p>- Khám phá sự sáng tạo: Bạn đừng ngại vẽ thêm, tô thêm màu sắc để thể hiện cảm xúc của riêng mình</p>
-        <p>- Chất liệu giấy dày, mịn, đẹp sẽ đem đến cho bạn trải nghiệm tô màu thú vị</p>
-        <p>...</p>`,
+        <div class="col-xs-12 description"><p style="text-align: justify;"><strong>Góc Nhỏ Có Nắng</strong></p>
+<p style="text-align: justify;">- Với 30 chủ đề tô màu phong phú đa dạng, mỗi bức tranh như là một lời thủ thỉ tâm tình gửi đến bạn</p>
+<p style="text-align: justify;">- Thư giãn và chữa lành: Với những hình ảnh đẹp mắt và đơn giản, tô màu sẽ là một phương pháp hiệu quả giúp bạn chữa lành và nuôi dưỡng tâm hồn</p>
+<p style="text-align: justify;">- Khám phá sự sáng tạo: Bạn đừng ngại vẽ thêm, tô thêm màu sắc để thể hiện cảm xúc của riêng mình</p>
+<p style="text-align: justify;">- Chất liệu giấy dày, mịn, đẹp sẽ đem đến cho bạn trải nghiệm tô màu thú vị</p>...</div>`,
   },
   {
     id: 2,
@@ -106,14 +103,9 @@ const categories = [
   "Thể loại khác",
 ];
 
-const BookList: React.FC = () => {
+const BookList = () => {
   const [activeTab, setActiveTab] = useState<number>(0);
   const [selectedBook, setSelectedBook] = useState<Book>(books[0]);
-
-  useEffect(() => {
-
-  }, [])
-  
 
   return (
     <div className="p-5">

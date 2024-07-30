@@ -1,0 +1,18 @@
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://BookstoreDB_owner:y10eXduIMamZ@ep-young-resonance-a1buml0i-pooler.ap-southeast-1.aws.neon.tech/BookstoreDB?sslmode=require"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        String      @id @default(uuid())  
+  email     String   @unique
+  password  String? 
+  fullName  String?
+  verified  Boolean  @default(false)
+  OTP String?
+  createdAt DateTime @default(now())
+}
