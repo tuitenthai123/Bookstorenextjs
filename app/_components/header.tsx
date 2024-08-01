@@ -14,7 +14,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { useToast } from "@/components/ui/use-toast"
-
+localStorage
 
 const Header: React.FC = () => {
   const [hienthipass, sethienthipass] = useState("password")
@@ -22,7 +22,19 @@ const Header: React.FC = () => {
   const [tinhnang, settinhnang] = useState("dangnhap")
   const [emailtemp, setemailtemp] = useState("")
   const email = useRef("")
+  const pass = useRef("")
+  const againpass = useRef("")
   const { toast } = useToast()
+
+  function validateEmail(email: string){
+    const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+    return emailRegex.test(email);
+  };
+
+  function validatePassword(password:string) {
+    const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?`~]).{6,}$/;
+    return regex.test(password)
+  }
 
   const handleOtpSubmit = (otpValue: string) => {
     handlekichhoatemail(otpValue,emailtemp)
@@ -38,17 +50,10 @@ const Header: React.FC = () => {
     }
   }
 
-  const validateEmail = (email: string) => {
-    const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-    return emailRegex.test(email);
-  };
-
   const handlexacthucemail = async () => {
     let emailinput = email.current.value
-    if(validateEmail(emailinput)){
-      
-      const guimail = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth`,{emailinput},
-        {headers: {"Content-Type": "application/json",},},)
+    if(validateEmail(emailinput)){    
+      await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth`,{emailinput},{headers: {"Content-Type": "application/json",},},)
       settinhnang("xacthuc")
       setemailtemp(emailinput)
     }else{
@@ -59,9 +64,8 @@ const Header: React.FC = () => {
   const handlekichhoatemail = async (OTP:string,email:string) => {
     const guimail = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/verify`,{OTP,email},
       {headers: {"Content-Type": "application/json",},},)
-    console.log(guimail)
     if(guimail?.data?.message === "ok"){
-      settinhnang("nhapmatkhau")
+      settinhnang("xacthucpassword")
       toast({
         variant: "default",
         title: "Xác thực thành công",
@@ -76,6 +80,62 @@ const Header: React.FC = () => {
       })
     }
   }
+
+
+  const handlexacnhanmatkhau = async () => {
+    if(pass.current.value === againpass.current.value){
+      if(validatePassword(pass.current.value)){
+        try {
+          const passguidi = pass.current.value
+          await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/verifypassword`,{passguidi,emailtemp},
+            {headers: {"Content-Type": "application/json",},},)
+          toast({
+            variant: "default",
+            title: "Tạo tài khoản thành công",
+            description: "Tài khoản của bạn đã tạo thành công!. \n bây giờ bạn có thể đăng nhập bằng tài khoản này",
+          })
+          settinhnang("dangnhap")
+        } catch (error) {
+          toast({
+            variant: "destructive",
+            title: "Lỗi cục bộ",
+            description: "Hãy thử liên hệ quản trị viên để xử lý",
+          })
+        }
+        
+      }else{
+        toast({
+          variant: "destructive",
+          title: "Lỗi mật khẩu không đúng định dạng",
+          description: "Mật khẩu phải có ít nhất 6 kí tự có số, một kí tự in hoa, một kí tự đặc biệt",
+        })
+      }
+    }else{
+      toast({
+        variant: "destructive",
+        title: "Lỗi mật khẩu không khớp",
+        description: "Hãy kiểm tra lại mật khẩu của bạn có khớp hay không",
+      })
+    }
+  }
+
+  const handlelogin = async () => {
+    const password = pass.current.value
+    let emailinput = email.current.value
+    const login = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/login`,{password,emailinput},
+      {headers: {"Content-Type": "application/json",},},)    
+      login.data.message ? toast({
+      variant: "default",
+      title: "Đăng nhập thành công",
+      description: "Chào mừng bạn đến với Fruitbook!",
+    }) :  
+    toast({
+      variant: "destructive",
+      title: "Lỗi đăng nhập",
+      description: "Hãy kiểm tra lại mật khẩu của bạn có khớp hay không",
+    })
+  }
+
   return (
   <Dialog>
     <div className="sticky top-0 z-50 backdrop-blur-lg border-b border-neutral-200 bg-cyan-700 sm:bg-white/75">
@@ -87,7 +147,7 @@ const Header: React.FC = () => {
               <span className="tracking-tight font-bold text-xl bg-gradient-to-r sm:from-[#3494E6] sm:to-[#EC6EAD] from-[#F29492] to-[#FFC371] text-transparent bg-clip-text">FruitsBook</span>
             </div>
             {/* tìm kiếm */}
-            <Searchbar label="Đắc Nhân Tâm, Javascript..."/>
+            <Searchbar label="Đắc Nhân Tâm, Mèo Đi Hia..."/>
             <div className="flex gap-5">
 
               {/* giỏ hàng */}
@@ -118,11 +178,11 @@ const Header: React.FC = () => {
                                   <div className='flex flex-col items-start gap-6'>
                                       {/* email */}
                                       <div className="flex items-center border-b border-teal-500  w-full p-1">
-                                        <input className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 leading-tight focus:outline-none" type="email" placeholder="abc@gmail.com" aria-label="Full name"/>
+                                        <input ref={email} className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 leading-tight focus:outline-none" type="email" placeholder="abc@gmail.com" aria-label="Full name"/>
                                       </div>
                                       {/* mật khẩu */}
                                       <div className="flex items-center border-b border-teal-500  w-full p-1">
-                                        <input className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 leading-tight focus:outline-none" type={hienthipass} placeholder="Mật Khẩu" aria-label="Full name"/>
+                                        <input ref={pass} className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 leading-tight focus:outline-none" type={hienthipass} placeholder="Mật Khẩu" aria-label="Full name"/>
                                         <button className="flex-shrink-0 border-transparent border-4 text-teal-500 hover:text-teal-800 text-sm py-1 rounded" type="button" onClick={handlehienthipass}>{checkhienthipass}</button>
                                       </div>
                                   </div>
@@ -137,7 +197,7 @@ const Header: React.FC = () => {
                             </div>
                           </div>
                           {/*nút đăng nhập*/}
-                          <div>
+                          <div onClick={handlelogin}>
                             <Button className=' w-full' variant={'custommau'}>Đăng nhập</Button>
                           </div>
                           <div className='sm:mt-24 mt-2 flex flex-col gap-3'>
@@ -184,9 +244,11 @@ const Header: React.FC = () => {
                           </div>
                         </div>
                       ):
+
+                      // tạo mật khẩu
                       tinhnang === "xacthuc" ?(
                         <div className='flex flex-col gap-3'>
-                          <div className='cursor-pointer w-5' onClick={()=>{settinhnang("taotaikhoan")}}>
+                          <div className='cursor-pointer w-5' onClick={()=>{settinhnang("dangnhap")}}>
                             <IoMdArrowRoundBack size={30} />
                           </div>
                           <div className='flex flex-col gap-2 items-center justify-center'>
@@ -196,7 +258,50 @@ const Header: React.FC = () => {
                             </div>
                           </div>
                         </div>
-                      ):(<div>hehehe</div>)}
+                      ):tinhnang === "xacthucpassword" ?(                        
+                        <div className='flex flex-col gap-5'>
+                          <div className='flex flex-col gap-5'>
+                            <div className='flex flex-col gap-1'>
+                              <div className='text-lg font-medium'>Tạo tai khoản,</div>
+                              <div className='text-xs'>Nhập mật khẩu cho tài khoản của bạn</div>
+                            </div>
+                            {/* dang nhap */}
+                            <div className='flex gap-1'>
+                              <div className='w-full'>
+                                <div className='flex flex-col gap-4'>
+                                  <div className='flex flex-col gap-2'>
+                                    <div className='flex flex-col items-start gap-5'>
+                                      <div className="flex items-center border-b border-teal-500  w-full p-1">
+                                        {/* email */}
+                                        <input disabled value={emailtemp} className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 leading-tight focus:outline-none" type="email" placeholder="abc@gmail.com" aria-label="Full name"/>
+                                      </div>
+                                      {/* mật khẩu */}
+                                      <div className='w-full'>
+                                        <div className="flex items-center border-b border-teal-500  w-full p-1">
+                                          <input ref={pass} className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 leading-tight focus:outline-none" type={hienthipass} placeholder="Mật Khẩu" aria-label="Full name"/>
+                                        </div>
+                                        <div><span className='text-xs opacity-55'>Lưu ý: Mật khẩu ít nhất 6 kí tự có số, một kí tự in hoa, một kí tự đặc biệt</span></div>
+                                      </div>
+                                      
+                                      {/* nhap lai mat khau */}
+                                      <div className="flex items-center border-b border-teal-500  w-full p-1">
+                                        <input ref={againpass} className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 leading-tight focus:outline-none" type={hienthipass} placeholder="Nhập lại mật khẩu" aria-label="Full name"/>
+                                      </div>
+                                    </div>
+                                      <div className='flex items-end justify-end'>
+                                        <button className="flex-shrink-0 border-transparent border-4 text-teal-500 hover:text-teal-800 text-sm py-1 rounded" type="button" onClick={handlehienthipass}>{checkhienthipass}</button>
+                                      </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          {/*nút đăng nhập*/}
+                          <div onClick={handlexacnhanmatkhau}>
+                            <Button className='w-full' variant={'custommau'}>Tạo tài khoản</Button>
+                          </div>
+                        </div>
+                      ):(<div>meomeo</div>)}
                     </div>
                     {/* hinh */}
                     <div className='sm:w-1/3'>

@@ -55,7 +55,8 @@ export async function POST(req: NextRequest) {
           await db.user.create({
             data:{
                email:`${email}`,
-               OTP:`${OTPcheck}`
+               OTP:`${OTPcheck}`,
+               avatarurl:`https://api.dicebear.com/9.x/identicon/svg?seed=${OTPcheck}`
             }
           });
           return NextResponse.json({ message: 'thành công' }, { status: 200 });
