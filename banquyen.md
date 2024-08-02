@@ -1,7 +1,5 @@
 # Security Policy
 
-## Supported Versions
-
 Sản phẩm thuộc về Fruitbook.
 
 | Version | Supported          |
