@@ -21,9 +21,9 @@ const Header: React.FC = () => {
   const [checkhienthipass, setcheckhienthipass] = useState("Hiện")
   const [tinhnang, settinhnang] = useState("dangnhap")
   const [emailtemp, setemailtemp] = useState("")
-  const email = useRef("")
-  const pass = useRef("")
-  const againpass = useRef("")
+  const email = useRef<HTMLInputElement>(null)
+  const pass = useRef<HTMLInputElement>(null)
+  const againpass = useRef<HTMLInputElement>(null)
   const { toast } = useToast()
 
   function validateEmail(email: string){
@@ -51,7 +51,7 @@ const Header: React.FC = () => {
   }
 
   const handlexacthucemail = async () => {
-    let emailinput = email.current.value
+    let emailinput = email.current!.value
     if(validateEmail(emailinput)){    
       await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth`,{emailinput},{headers: {"Content-Type": "application/json",},},)
       settinhnang("xacthuc")
@@ -83,10 +83,10 @@ const Header: React.FC = () => {
 
 
   const handlexacnhanmatkhau = async () => {
-    if(pass.current.value === againpass.current.value){
-      if(validatePassword(pass.current.value)){
+    if(pass.current!.value === againpass.current!.value){
+      if(validatePassword(pass.current!.value)){
         try {
-          const passguidi = pass.current.value
+          const passguidi = pass.current!.value
           await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/verifypassword`,{passguidi,emailtemp},
             {headers: {"Content-Type": "application/json",},},)
           toast({
@@ -120,8 +120,8 @@ const Header: React.FC = () => {
   }
 
   const handlelogin = async () => {
-    const password = pass.current.value
-    let emailinput = email.current.value
+    const password = pass.current!.value
+    let emailinput = email.current!.value
     const login = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/login`,{password,emailinput},
       {headers: {"Content-Type": "application/json",},},)    
       login.data.message ? toast({
