@@ -1,5 +1,6 @@
 "use client"
-import React,{useState,useRef} from 'react'
+import React,{useState,useRef,useEffect} from 'react'
+import Cookies from 'js-cookie';
 import axios from 'axios'
 import logo from "../../asset/Logo.png"
 import Icon from "./icon"
@@ -7,14 +8,27 @@ import Searchbar from "./searchbar"
 import {InputOTPForm}  from './OTPinput'
 import { FaRegCircleUser,FaBagShopping  } from "react-icons/fa6"
 import { IoMdArrowRoundBack } from "react-icons/io";
+import { FaUserEdit } from "react-icons/fa";
+import { LiaSignOutAltSolid } from "react-icons/lia";
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { useToast } from "@/components/ui/use-toast"
-localStorage
+import Link from 'next/link';
+
 
 const Header: React.FC = () => {
   const [hienthipass, sethienthipass] = useState("password")
@@ -24,8 +38,22 @@ const Header: React.FC = () => {
   const email = useRef<HTMLInputElement>(null)
   const pass = useRef<HTMLInputElement>(null)
   const againpass = useRef<HTMLInputElement>(null)
+  const [login, setlogin] = useState(false)
+  const [avataurl, setavataurl] = useState("")
   const { toast } = useToast()
 
+  useEffect(() => {
+  const status = Cookies.get("loginstatus")
+  if(status === "true"){
+    setlogin(true)
+    setavataurl(Cookies.get("urlava")!)
+  }else
+    setlogin(false)
+  }, [])
+  
+  function sleep(ms:number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
   function validateEmail(email: string){
     const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
     return emailRegex.test(email);
@@ -120,20 +148,44 @@ const Header: React.FC = () => {
   }
 
   const handlelogin = async () => {
-    const password = pass.current!.value
-    let emailinput = email.current!.value
-    const login = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/login`,{password,emailinput},
-      {headers: {"Content-Type": "application/json",},},)    
-      login.data.message ? toast({
-      variant: "default",
-      title: "Đăng nhập thành công",
-      description: "Chào mừng bạn đến với Fruitbook!",
-    }) :  
-    toast({
-      variant: "destructive",
-      title: "Lỗi đăng nhập",
-      description: "Hãy kiểm tra lại mật khẩu của bạn có khớp hay không",
-    })
+    const password = pass.current!.value;
+    let emailinput = email.current!.value;
+    try {
+      const loginResponse = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/login`, { password, emailinput },
+        { headers: { "Content-Type": "application/json" }, });
+      if (loginResponse.data.message) {
+        setavataurl(loginResponse.data.avata)
+        Cookies.set("urlava",loginResponse.data.avata)
+        Cookies.set("loginstatus","true")
+        setlogin(true)
+        toast({
+          variant: "default",
+          title: "Đăng nhập thành công",
+          description: "Chào mừng bạn đến với Fruitbook!",
+        });
+        await sleep(2000);
+        window.location.reload()
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Lỗi đăng nhập",
+          description: "Hãy kiểm tra lại mật khẩu của bạn có khớp hay không",
+        });
+      }
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Lỗi đăng nhập",
+        description: "Đã xảy ra lỗi trong quá trình đăng nhập. Vui lòng thử lại sau.",
+      });
+    }
+  };
+
+  const handlesignout = () => {
+    console.log("conmeo")
+    setlogin(false)
+    Cookies.set("loginstatus","false")
+    Cookies.remove("urlava")
   }
 
   return (
@@ -154,11 +206,32 @@ const Header: React.FC = () => {
               <Icon icon={FaBagShopping} label="Giỏ Hàng" href="#" />
 
               {/* đăng nhập */}
+              {login ? (      
+                  <DropdownMenu>
+                  <DropdownMenuTrigger className='flex items-center justify-center '>
+                    <img src={avataurl} alt="" className='w-12 h-12 rounded-full border'/>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-56">
+                    <DropdownMenuLabel>User Setting</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuGroup>
+                      <DropdownMenuItem>
+                        <FaUserEdit className="mr-2 h-4 w-4" />
+                        <Link href={"/setting"}>Setting</Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <LiaSignOutAltSolid onClick={handlesignout} className="mr-2 h-4 w-4" />
+                        <span>Sign out</span>
+                      </DropdownMenuItem>
+                    </DropdownMenuGroup>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ):(              
               <DialogTrigger asChild>
                 <div onClick={()=>{settinhnang("dangnhap")}}>
                   <Icon icon={FaRegCircleUser} label="Tài Khoản" href="#" />
                 </div>
-              </DialogTrigger>
+              </DialogTrigger>)}
 
               {/* dialog content */}
                 <DialogContent className='sm:w-[900px] w-[425px] rounded-lg'>
@@ -188,7 +261,7 @@ const Header: React.FC = () => {
                                   </div>
                                     <div className='flex justify-end gap-2 text-xs text-teal-500 mb-4'>
                                       <div className='flex flex-col justify-end items-end gap-2'>
-                                        <u className='cursor-pointer sm:-ml-36'>Quên mật khẩu?</u>
+                                        <u className='cursor-pointer sm:-ml-36'  onClick={handlesignout}>Quên mật khẩu?</u>
                                         <span className='cursor-pointer sm:-ml-36'>Chưa có tài khoản? <u onClick={()=>{settinhnang("taotaikhoan")}}>Tạo tài khoản!</u></span>
                                       </div>
                                     </div>

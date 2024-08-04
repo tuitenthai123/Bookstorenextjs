@@ -10,8 +10,11 @@ export async function POST(req: NextRequest) {
             password:res?.password
         },
     })
+    const avata = await db.user.findMany({
+      where:{email:res?.emailinput}
+    })
     if(dangnhap)
-        return NextResponse.json({ message: true }, { status: 200 });
+        return NextResponse.json({ message: true,avata:avata[0]?.avatarurl }, { status: 200 });
     else
         return NextResponse.json({ message: false }, { status: 200 });
   } catch (error) {
