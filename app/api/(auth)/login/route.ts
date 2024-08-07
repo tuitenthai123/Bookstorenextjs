@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
       where:{email:res?.emailinput}
     })
     if(dangnhap)
-        return NextResponse.json({ message: true,avata:avata[0]?.avatarurl }, { status: 200 });
+        return NextResponse.json({ message: true,avata:avata[0] }, { status: 200 });
     else
         return NextResponse.json({ message: false }, { status: 200 });
   } catch (error) {

@@ -23,9 +23,13 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar"
 import { useToast } from "@/components/ui/use-toast"
 import Link from 'next/link';
 
@@ -109,7 +113,6 @@ const Header: React.FC = () => {
     }
   }
 
-
   const handlexacnhanmatkhau = async () => {
     if(pass.current!.value === againpass.current!.value){
       if(validatePassword(pass.current!.value)){
@@ -154,9 +157,12 @@ const Header: React.FC = () => {
       const loginResponse = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/login`, { password, emailinput },
         { headers: { "Content-Type": "application/json" }, });
       if (loginResponse.data.message) {
-        setavataurl(loginResponse.data.avata)
-        Cookies.set("urlava",loginResponse.data.avata)
+        Cookies.set("urlava",loginResponse.data.avata?.avatarurl)
         Cookies.set("loginstatus","true")
+        Cookies.set("email",loginResponse.data?.avata?.email)
+        Cookies.set("fullname",loginResponse.data?.avata?.fullName)
+        Cookies.set("verified",loginResponse.data?.avata?.verified)
+        console.log(loginResponse.data?.avata?.verified)
         setlogin(true)
         toast({
           variant: "default",
@@ -182,10 +188,12 @@ const Header: React.FC = () => {
   };
 
   const handlesignout = () => {
-    console.log("conmeo")
     setlogin(false)
     Cookies.set("loginstatus","false")
     Cookies.remove("urlava")
+    Cookies.remove("fullname")
+    Cookies.remove("email")
+    Cookies.remove("verified")
   }
 
   return (
@@ -194,40 +202,47 @@ const Header: React.FC = () => {
         <div className="container mx-auto relative text-sm ">
           <div className="flex justify-between items-center">
             {/* logo */}
-            <div className="cursor-pointer flex h-20 w-20 items-center flex-shrink-0 sm:flex-row flex-col">
+            <div className="cursor-pointer flex h-20 w-20 items-center sm:flex-row flex-col">
               <img className="mr-2 h-16 w-32" src={logo.src} alt="logo" />
               <span className="tracking-tight font-bold text-xl bg-gradient-to-r sm:from-[#3494E6] sm:to-[#EC6EAD] from-[#F29492] to-[#FFC371] text-transparent bg-clip-text">FruitsBook</span>
             </div>
             {/* tìm kiếm */}
             <Searchbar label="Đắc Nhân Tâm, Mèo Đi Hia..."/>
-            <div className="flex gap-5">
-
+            <div className="flex gap-2 sm:gap-5">
               {/* giỏ hàng */}
               <Icon icon={FaBagShopping} label="Giỏ Hàng" href="#" />
 
               {/* đăng nhập */}
               {login ? (      
-                  <DropdownMenu>
-                  <DropdownMenuTrigger className='flex items-center justify-center '>
-                    <img src={avataurl} alt="" className='w-12 h-12 rounded-full border'/>
+                <DropdownMenu>
+                  <DropdownMenuTrigger className='flex items-center justify-center md:block border-0 rounded-full h-6 mt-2 '>
+                    {/* avata */}
+                    <Avatar className='rounded-full bg-white border-0'>
+                      <AvatarImage src={avataurl || ""} alt="@shadcn" />
+                      <AvatarFallback>conmeo</AvatarFallback>
+                    </Avatar>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-56">
                     <DropdownMenuLabel>User Setting</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuGroup>
-                      <DropdownMenuItem>
-                        <FaUserEdit className="mr-2 h-4 w-4" />
-                        <Link href={"/setting"}>Setting</Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        <LiaSignOutAltSolid onClick={handlesignout} className="mr-2 h-4 w-4" />
+                      <Link href={"/setting/profile"} >
+                        <DropdownMenuItem className='cursor-pointer'>
+                          <div className='flex items-center'>
+                            <FaUserEdit className="mr-2 h-4 w-4" />
+                            <span>Setting</span>
+                          </div>
+                        </DropdownMenuItem>
+                      </Link>
+                      <DropdownMenuItem className='cursor-pointer' onClick={handlesignout}>
+                        <LiaSignOutAltSolid  className="mr-2 h-4 w-4" />
                         <span>Sign out</span>
                       </DropdownMenuItem>
                     </DropdownMenuGroup>
                   </DropdownMenuContent>
                 </DropdownMenu>
               ):(              
-              <DialogTrigger asChild>
+              <DialogTrigger>
                 <div onClick={()=>{settinhnang("dangnhap")}}>
                   <Icon icon={FaRegCircleUser} label="Tài Khoản" href="#" />
                 </div>
