@@ -1,8 +1,9 @@
 "use client"
-import React,{useState,useEffect} from "react";
+import React,{useState,useEffect, Suspense} from "react";
 import HeaderSetting from "./_component/HeaderSetting";
 import SidebarSetting from "./_component/SidebarSetting";
 import Profileuser from "./_component/profileuser";
+import Loading from "./_component/loading";
 import { redirect } from "next/navigation";
 import Cookies from 'js-cookie';
 const SettingLayout = ({
@@ -49,17 +50,20 @@ const SettingLayout = ({
     }
     return ( 
       <div className="flex flex-col">
-        <div className="flex justify-start items-center p-3">
+        <div className="flex justify-start items-center border-b-2 border-gray-200/40 p-3">
             <HeaderSetting/>
         </div>
-        <div className="border p-2"><Profileuser/></div>
-        <div className="flex border">
-            <div className="border w-1/4 flex items-center justify-center">
-                <SidebarSetting/>
-            </div>
-            <div className=" w-3/4 h-full flex border justify-center p-44">
-                {children}
-            </div>
+        <div className="p-3 mt-2"><Profileuser/></div>
+        <div className="flex">
+          <div className="sm:w-1/5 w-1/3 ">
+            <SidebarSetting/>
+          </div>
+          <div className="sm:w-4/5 w-2/3 flex border p-1.5">
+          <Suspense fallback={<Loading/>} >
+            {children}
+          </Suspense>
+          </div>
+
         </div>
       </div>
      );
